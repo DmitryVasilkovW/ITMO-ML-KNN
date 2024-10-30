@@ -17,7 +17,7 @@ y_test = processor.get("y", "test")
 for k in neighbors:
     knn = KNeighborsRegressor(n_neighbors=k, weights='uniform', metric='minkowski', p=2)
     knn.fit(x_train, y_train)
-    train_errors.append(knn.score(y_train, y_train))
+    train_errors.append(knn.score(x_train, y_train))
     test_errors.append(knn.score(x_test, y_test))
 
 plt.plot(neighbors, train_errors, label="Training score")
