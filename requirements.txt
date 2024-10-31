@@ -4,3 +4,5 @@ scikit-learn~=1.5.2
 numpy~=2.1.2
 matplotlib~=3.9.2
 statsmodels~=0.14.4
+scipy~=1.14.1
+joblib~=1.4.2
