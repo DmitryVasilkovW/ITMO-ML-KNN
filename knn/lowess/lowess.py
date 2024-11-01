@@ -3,13 +3,16 @@ from sklearn.metrics import accuracy_score
 from statsmodels.nonparametric.smoothers_lowess import lowess
 
 from knn.hyperparameter_selection.hyperparameter import KNNModelSelector
-from knn.impl.knn_impl import KNN
+from knn.impl.knn_impl import KNearestNeighbors
 from knn.separation.axis_repo import DataRepo
 
 
 def lowess_smoothing(x, y, fraction=0.25):
     if x.ndim > 1:
         x = x[:, 0]
+
+    x = x + np.random.normal(0, 0.01, size=x.shape)
+    y = y + np.random.normal(0, 0.01, size=y.shape)
 
     smoothed_values = lowess(y, x, frac=fraction, return_sorted=False)
     return smoothed_values
@@ -29,10 +32,10 @@ def show_difference_between_weighted_and_unweighted(attribute="Heating_Load"):
     residuals_train = y_train - fitted_train
     weights_train = np.clip(residuals_train / np.std(residuals_train), 0, None)
 
-    knn = KNN(base_n_neighbors=best_params['base_n_neighbors'],
-              kernel=best_params['kernel'],
-              metric=best_params['metric'],
-              dynamic_window=best_params['dynamic_window'])
+    knn = KNearestNeighbors(base_n_neighbors=best_params['base_n_neighbors'],
+                            kernel=best_params['kernel'],
+                            metric=best_params['metric'],
+                            dynamic_window=best_params['dynamic_window'])
     knn.fit(x_train, y_train)
 
     pred_test_no_weights = knn.predict(x_test)

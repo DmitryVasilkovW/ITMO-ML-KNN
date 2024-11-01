@@ -3,11 +3,11 @@ import pandas as pd
 from sklearn.neighbors import NearestNeighbors
 
 
-class KNN:
+class KNearestNeighbors:
     def __init__(self, base_n_neighbors=5, weights='uniform', kernel='uniform', metric='euclidean', min_neighbors=1,
                  dynamic_window=False):
         self.y_train = None
-        self.X_train = None
+        self.x_train = None
         self.base_n_neighbors = base_n_neighbors
         self.weights = weights
         self.kernel = kernel
@@ -17,12 +17,16 @@ class KNN:
         self.sample_weights = None
         self.model = NearestNeighbors(n_neighbors=self.base_n_neighbors, metric=self.metric)
 
-    def fit(self, X, y, sample_weights=None):
-        """Обучение модели на тренировочных данных с возможными априорными весами."""
-        self.X_train = X
+    def fit(self, x, y, sample_weights=None):
+        self.x_train = x
         self.y_train = y
-        self.sample_weights = sample_weights if sample_weights is not None else np.ones(len(X))
-        self.model.fit(X)
+        if sample_weights is not None:
+            self.sample_weights = sample_weights
+        else:
+            self.sample_weights = np.ones(len(x))
+
+        self.sample_weights = sample_weights if sample_weights is not None else np.ones(len(x))
+        self.model.fit(x)
 
     def predict(self, X):
         """Предсказание меток классов для новых данных."""

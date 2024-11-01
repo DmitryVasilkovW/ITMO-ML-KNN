@@ -2,7 +2,7 @@ from matplotlib import pyplot as plt
 from sklearn.metrics import accuracy_score
 
 from knn.hyperparameter_selection.hyperparameter import KNNModelSelector
-from knn.impl.knn_impl import KNN
+from knn.impl.knn_impl import KNearestNeighbors
 from knn.lowess.lowess import show_difference_between_weighted_and_unweighted
 from knn.separation.axis_repo import DataRepo
 
@@ -20,8 +20,8 @@ params = KNNModelSelector()
 best_params = params.get_best_params()
 
 for n_neighbors in neighbors_range:
-    _knn = KNN(base_n_neighbors=n_neighbors, kernel=best_params['kernel'], metric=best_params['metric'],
-               dynamic_window=best_params['dynamic_window'])
+    _knn = KNearestNeighbors(base_n_neighbors=n_neighbors, kernel=best_params['kernel'], metric=best_params['metric'],
+                             dynamic_window=best_params['dynamic_window'])
     _knn.fit(X_train, y_train)
 
     y_pred_train = _knn.predict(X_train)
