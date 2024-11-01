@@ -43,7 +43,7 @@ class DataRepo:
         return None
 
     @classmethod
-    def get_axis(cls, axis: str, data_type: str, attribute="Heating_Load"):
+    def get_axis(cls, axis: str, data_type: str, attribute="Class"):
         if cls.data is None:
             cls.data = get_data()
         if cls.repo is None:

@@ -33,18 +33,18 @@ class KNearestNeighbors:
     def predict(self, x):
         predictions = []
         for point in x:
-            distances, indices = self.model.kneighbors([point], n_neighbors=self.base_n_neighbors)
+            distances, indexes = self.model.kneighbors([point], n_neighbors=self.base_n_neighbors)
             n_neighbors = self._get_window_size(distances[0])
-            distances, indices = self.model.kneighbors([point], n_neighbors=n_neighbors)
-            predictions = self._predictor(predictions, indices, distances)
+            distances, indexes = self.model.kneighbors([point], n_neighbors=n_neighbors)
+            predictions = self._predictor(predictions, indexes, distances)
 
         return np.array(predictions)
 
-    def _predictor(self, predictions, indices, distances):
+    def _predictor(self, predictions, indexes, distances):
         if self.weights == 'uniform':
-            predictions.append(self._receive_most_probable_uniform(indices))
+            predictions.append(self._receive_most_probable_uniform(indexes))
         elif self.weights == 'distance':
-            predictions.append(self._receive_most_probable_distance(distances, indices))
+            predictions.append(self._receive_most_probable_distance(distances, indexes))
         return predictions
 
     def _get_window_size(self, distances):
@@ -53,9 +53,9 @@ class KNearestNeighbors:
         else:
             return self.base_n_neighbors
 
-    def _receive_most_probable_uniform(self, indices):
+    def _receive_most_probable_uniform(self, indexes):
         weighted_votes = {}
-        neighbors = indices[0]
+        neighbors = indexes[0]
         weighted_votes = self._check_all_neighbors_for_form(neighbors, weighted_votes)
 
         return max(weighted_votes, key=weighted_votes.get)
@@ -87,13 +87,13 @@ class KNearestNeighbors:
         else:
             return self.sample_weights[neighbor]
 
-    def _receive_most_probable_distance(self, distances, indices):
+    def _receive_most_probable_distance(self, distances, indexes):
         predictions = []
-        predictions = self._check_all_indexes(distances, indices, predictions)
+        predictions = self._check_all_indexes(distances, indexes, predictions)
         return predictions
 
-    def _check_all_indexes(self, distances, indices, predictions):
-        for i, neighbors in enumerate(indices):
+    def _check_all_indexes(self, distances, indexes, predictions):
+        for i, neighbors in enumerate(indexes):
             weighted_votes = {}
             weighted_votes = self._check_all_neighbors_for_distance(distances, neighbors, weighted_votes, i)
             predictions.append(max(weighted_votes, key=weighted_votes.get))

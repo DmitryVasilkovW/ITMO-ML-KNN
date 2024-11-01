@@ -21,7 +21,7 @@ def _calculate_coefficients(x, weight, y):
     return np.linalg.pinv(x.T @ weight @ x) @ (x.T @ weight @ y.values)
 
 
-def compute_fitted_value(x, y, weights, fraction, i):
+def get_lowess(x, y, weights, fraction, i):
     distances = _calculate_distances(x, i)
     bandwidth = _calculate_bandwidth(distances, fraction)
     weight = _calculate_local_weights(distances, bandwidth, weights)

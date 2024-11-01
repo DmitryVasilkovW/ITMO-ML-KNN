@@ -44,14 +44,14 @@ class KNNModelSelector:
 
     @classmethod
     def _try_to_update(cls, metric, kernel, base_n_neighbors, dynamic_window, x_train, y_train, kf):
-        __knn = KNearestNeighbors(
+        knn = KNearestNeighbors(
             base_n_neighbors=base_n_neighbors,
             kernel=kernel,
             metric=metric,
             dynamic_window=dynamic_window
         )
 
-        scores = cross_val_score(__knn, x_train, y_train, cv=kf, scoring='accuracy')
+        scores = cross_val_score(knn, x_train, y_train, cv=kf, scoring='accuracy')
         mean_accuracy = scores.mean()
 
         if mean_accuracy > cls.best_score:
@@ -62,7 +62,7 @@ class KNNModelSelector:
                 'base_n_neighbors': base_n_neighbors,
                 'dynamic_window': dynamic_window
             }
-            cls.best_model = __knn
+            cls.best_model = knn
 
     @classmethod
     def get_best_model(cls, param_grid=None, attribute="Class"):
