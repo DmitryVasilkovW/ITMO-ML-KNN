@@ -3,10 +3,10 @@ from sklearn.preprocessing import StandardScaler
 
 
 class DataProcessor:
-    def __init__(self, data):
+    def __init__(self, data, attribute: str):
         self.data = data
-        self.X = self.data.drop(["Heating_Load", "Cooling_Load"], axis=1)
-        self.y = self.data["Heating_Load"]
+        self.X = self.data.drop([attribute], axis=1)
+        self.y = self.data[attribute]
         self.scaler = StandardScaler()
         self.X_scaled = self.scaler.fit_transform(self.X)
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(

@@ -5,7 +5,7 @@ from knn.dataset import view
 from knn.separation.select_data import DataProcessor
 
 data = view.get_data()
-processor = DataProcessor(data)
+processor = DataProcessor(data, "Heating_Load")
 neighbors = range(1, 20)
 train_errors = []
 test_errors = []
