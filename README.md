@@ -1,7 +1,5 @@
 # Метод ближайших соседей
 
-[https://classroom.github.com/a/JsMt3CJl](https://classroom.github.com/a/JsMt3CJl) 
-
 # Алгоритм
 
 Реализуйте метод ближайших соседей:
